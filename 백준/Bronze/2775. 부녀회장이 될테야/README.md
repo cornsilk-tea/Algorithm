@@ -8,7 +8,7 @@
 
 ### 분류
 
-구현(implementation), 수학(math)
+다이나믹 프로그래밍(dp), 구현(implementation), 수학(math)
 
 ### 문제 설명
 

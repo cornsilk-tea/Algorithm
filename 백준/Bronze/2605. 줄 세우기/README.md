@@ -8,7 +8,7 @@
 
 ### 분류
 
-자료 구조(data_structures), 구현(implementation), 연결 리스트(linked_list)
+자료 구조(data_structures), 구현(implementation)
 
 ### 문제 설명
 

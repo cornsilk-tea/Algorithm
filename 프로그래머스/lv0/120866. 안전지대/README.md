@@ -1,10 +1,10 @@
 # [level 0] 안전지대 - 120866 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120866) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120866?language=java) 
 
 ### 성능 요약
 
-메모리: 79.4 MB, 시간: 11.39 ms
+메모리: 77.2 MB, 시간: 10.28 ms
 
 ### 구분
 

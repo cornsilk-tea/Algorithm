@@ -3,19 +3,19 @@ class Solution {
     public int solution(int n, int[][] computers) {
         int answer = 0;
         boolean[] v = new boolean[n];
-        for(int computerNumber = 0; computerNumber < n; computerNumber++){
-            if(v[computerNumber] == false){
+        for(int i = 0; i < n; i++){
+            if(!v[i]){
                 answer++;
-                dfs(computerNumber, computers, v);
+                dfs(i,computers,v);
             }
         }
         return answer;
     }
-    public void dfs(int currentComputerNumber, int[][] computers, boolean[] v){
-        v[currentComputerNumber] = true;
-        for(int nextComputerNumber = 0; nextComputerNumber < computers.length; nextComputerNumber++){
-            if(computers[currentComputerNumber][nextComputerNumber] == 1 && v[nextComputerNumber] == false){
-                dfs(nextComputerNumber, computers, v);
+    public void dfs(int com, int[][] computers, boolean[] v){
+        v[com] = true;
+        for(int ncom = 0; ncom < v.length; ncom++){
+            if(!v[ncom] && computers[com][ncom] == 1){
+                dfs(ncom, computers,v);
             }
         }
     }

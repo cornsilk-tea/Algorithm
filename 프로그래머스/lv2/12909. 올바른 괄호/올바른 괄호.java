@@ -10,13 +10,12 @@ class Solution {
                 if(stack.peek() == '('){
                     stack.pop();
                 }
-            }    
+            }
             else{
                 stack.push(c);
             }
-        
         }
-        if(!stack.empty()) return false;
-        return answer;
+        
+        return stack.size() == 0? true:false;
     }
 }

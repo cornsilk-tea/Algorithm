@@ -1,7 +1,5 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -16,15 +14,13 @@ public class Main {
         }
 
         long result = 0;
-        Map<Integer, Integer> map = new HashMap<>();
-        map.put(0, 1);
+        int[] count = new int[m];
+        count[0] = 1;
         int sum = 0;
         for (int i = 0; i < n; i++) {
             sum = (sum + nums[i]) % m;
-            if (map.containsKey(sum)) {
-                result += map.get(sum);
-            }
-            map.put(sum, map.getOrDefault(sum, 0) + 1);
+            result += count[sum];
+            count[sum]++;
         }
 
         System.out.println(result);

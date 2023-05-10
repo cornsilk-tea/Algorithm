@@ -2,14 +2,22 @@ import java.util.*;
 class Solution {
     public String solution(int[] numbers) {
         String answer = "";
-        String[] stringNumbers = new String[numbers.length];
-        for(int i = 0; i < numbers.length; i++){
-            stringNumbers[i] = numbers[i]+"";
+        Integer[] newNumbers = new Integer[numbers.length];
+        for(int i = 0; i < numbers.length; i++) {
+            newNumbers[i] = Integer.valueOf(numbers[i]);
         }
-        Arrays.sort(stringNumbers, (o1, o2) -> (o2 + o1).compareTo(o1 + o2));
-        for(String s : stringNumbers){
-            answer+=s;
+        Arrays.sort(newNumbers, (a, b) -> {
+            String case1 = a+""+b;
+            String case2 = b+""+a;
+            return case2.compareTo(case1);
+        });
+        for(int i : newNumbers){
+            answer += i+"";
         }
-        return answer.charAt(0)=='0'?"0":answer;
+        // 0체크
+        if(answer.charAt(0) == '0'){
+            return "0";
+        }
+        return answer;
     }
 }

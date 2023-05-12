@@ -1,35 +1,37 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
 
-  public static void main(String[] args) throws IOException {
-    // TODO Auto-generated method stub
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    StringTokenizer st = new StringTokenizer(br.readLine());
-    int N = Integer.parseInt(st.nextToken());
-    int M = Integer.parseInt(st.nextToken());
-    st = new StringTokenizer(br.readLine());
-    int[] cards = new int[N];
-    for (int i = 0; i < N; i++) {
-      cards[i] = Integer.parseInt(st.nextToken());
+    static int N,M, result;
+    static int[] cards;
+    static boolean[] visited;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        cards = Arrays.stream(br.readLine().split(" ")).mapToInt(value -> Integer.parseInt(value)).toArray();
+        visited = new boolean[N];
+        result = 0;
+        combination(0, 0);
+        System.out.println(result);
     }
-    L: for (int target = M; target > 1; target--) {
-      for (int i = 0; i < cards.length; i++) {
-        for (int j = i + 1; j < cards.length; j++) {
-          for (int k = j + 1; k < cards.length; k++) {
-            if (cards[i] + cards[j] + cards[k] == target) {
-              System.out.println(target);
-              break L;
-            }
-          }
+    private static void combination(int cnt, int sum){
+        if(cnt == 3){
+            if(sum <= M)
+                result = Math.max(sum, result);
+            return;
         }
-      }
+        for(int i = 0; i < N; i++){
+            if(visited[i] == false){
+                visited[i] = true;
+                combination(cnt+1, sum + cards[i]);
+                visited[i] = false;
+            }
+        }
     }
-
-
-  }
-
 }

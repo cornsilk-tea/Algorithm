@@ -6,8 +6,12 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int N;
+    // 문제조건에서 N은 최대 20까지 가능하다.
+    // 20!를 계산하게된다면 int범위를 초과하기 때문에 long으로 선언해준다.
     static long K, cntK;
+    // 소문제 번호를 판단하기 위한 변수
     static int problemNo;
+    // 소문제 번호가 2번일 경우, 찾아야 하는 순열을 저장하기 위한 배열.
     static int[] targetPermutation;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -18,7 +22,7 @@ public class Main {
         targetPermutation = new int[N];
         if(problemNo == 1){
             // K가 int범위를 초과할 수 있으므로, long으로 받아준다.
-            // ex
+            // 만약 문제가 아래와같이 나온다면, 범위를 초과한다.
             // 20
             // 1 2432902008176640000
             K = Long.parseLong(st.nextToken());
@@ -28,35 +32,41 @@ public class Main {
             while(st.hasMoreTokens()){
                 targetPermutation[idx++] = Integer.parseInt(st.nextToken());
             }
-            // 20번째 줄과 마찬가지로 int범위를 초과할 수 있으므로, long으로 받아준다.
+            // K와 마찬가지로 int범위를 초과할 수 있으므로, long으로 받아준다.
             cntK = 0;
         }
         // 본 코드
-        // 우선 problemNo가 1인경우만 구현하기
         dfs(0, new int[N], new boolean[N+1]);
     }
     private static boolean dfs(int depth, int[] permutation, boolean[] v){
-        boolean flag = false;
-        // 소문제의 번호가 1번인지 2번인지에 따라 다른 로직을 수행한다.
-        // 1번일 경우 k번째 순열을 출력한다.
-        if(problemNo == 1){
-            // 종료조건
-            if(depth == N){
-//                System.out.println("종료조건 도착");
+        if(depth == N){
+            // 종료조건에 따라 수행하는 로직이 다르다.
+            if(problemNo == 1){
                 System.out.println(Arrays.toString(permutation).replaceAll("[\\[\\],]", ""));
                 return true;
             }
-            // 본문
-            for(int currNum = 1; currNum <= N; currNum++){
-                // 이미 방문했던 숫자라면 건너뛴다.
-                if(v[currNum] == true){
-                    continue;
-                }
+            else if(problemNo == 2){
+                cntK++;
+                System.out.println(cntK);
+                return true;
+            }
+        }
+        for(int currNum = 1; currNum <= N; currNum++){
+            // 이미 방문했던 숫자라면 다음숫자로 넘어간다.
+            if(v[currNum] == true){
+                continue;
+            }
+            // problemNo에 따라 다른 로직을 적용해준다.
+            // problemNo가 1일경우
+            if(problemNo == 1){
                 // K를 판별하기 위해선 어떻게해야할까?
-                // N개의 숫자 -currNum을 factorial을 통해 구해 임시값에 저장해준다.
+                // 현재 depth에서의 순열의 개수는 factorial(N-depth-1)이다.
+                // 만약 K가 현재 depth에서의 순열의 개수보다 크다면, 현재 depth에서의 순열에는 K번째 순열이 없다.
+                // 따라서 K에서 현재 depth에서의 순열의 개수를 빼준다.
                 long temp = factorial(N-depth-1);
                 // K가 temp보다 크다면 현재 반복문 다음에 나오는 숫자로 넘어가야한다.
                 if(K > temp){
+                    // 넘어가기 전에 현재 수에서 만들어질 수 있는 모든 순열의 개수를 K에서 빼준다.
                     K -= temp;
                     continue;
                 }
@@ -66,30 +76,14 @@ public class Main {
                     permutation[depth] = currNum;
                     // 방문처리
                     v[currNum] = true;
-                    // 다음 depth로 넘어간다.
-                    flag = dfs(depth+1, permutation, v);
-                    if(flag == true){
+                    // 다음 depth로 넘어간 후 K번째 순열을 찾았다면 true를 반환해준다.
+                    if(dfs(depth+1, permutation, v) == true){
                         return true;
                     }
                 }
             }
-        }
-        // 2번일 경우 targerPermutation이 몇번째 함수인지 출력해준다.
-        else if(problemNo == 2){
-            // 종료조건
-            if(depth == N){
-                cntK++;
-                System.out.println(cntK);
-                return true;
-            }
-            // 본문
-            // targetPermutation의 depth번째 숫자를 찾으며, 만약 현재 위치의 수가 depth번째 숫자와 다르다면, cntK에 factorial(N-depth-1)을 더해준다.
-            // 그 후 continue로 해당하는 숫자를 찾을때까지 반복해준다.
-            for(int currNum = 1; currNum <= N; currNum++){
-                // 우선 방문했던 숫자라면 넘겨준다.
-                if(v[currNum] == true){
-                    continue;
-                }
+            // problemNo가 2일경우
+            else if(problemNo == 2){
                 // 만약 현재 숫자가 depth번째 숫자와 다르다면 cntK에 factorial(N-depth-1)을 더해준다.
                 if(currNum != targetPermutation[depth]){
                     cntK += factorial(N-depth-1);
@@ -99,14 +93,14 @@ public class Main {
                 else if(currNum == targetPermutation[depth]){
                     permutation[depth] = currNum;
                     v[currNum] = true;
-                    flag = dfs(depth+1, permutation, v);
-                    if(flag == true){
+                    if(dfs(depth+1, permutation, v) == true){
                         return true;
                     }
                 }
             }
         }
-        return flag;
+
+        return false;
     }
 
     // factorial 함수

@@ -32,15 +32,13 @@ public class Main {
         for(int i = 0; i < N; i++){
             map[i] = br.readLine().toCharArray();
         }
-//        for(char[] a : map){
-//            System.out.println(Arrays.toString(a));
-//        }
         // bfs로 탐색
         int[][] visited = new int[N][M];
+        // 친구가 없는 곳에서는 다음 파동으로 넘기기 위해 deque의 앞에 다음 위치를 넣어준다.
         Deque<int[]> dq = new ArrayDeque<>();
         dq.addLast(junan);
-//        System.out.println(Arrays.toString(junan));
         visited[junan[0]][junan[1]] = 1;
+        // 탐색시 현재위치
         int[] curr;
         int r, c, nr, nc, result = 0;
         while(!dq.isEmpty()){
@@ -50,7 +48,7 @@ public class Main {
             if(Arrays.equals(curr, target)){
                 // 찾음
                 result = Math.max(visited[r][c]-1, result);
-                continue;
+                break;
             }
             for(int d = 0; d < 4; d++){
                 nr = r + deltas[d];

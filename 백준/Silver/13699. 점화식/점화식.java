@@ -5,14 +5,16 @@ import java.io.InputStreamReader;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        long[] dp = new long[n+1];
+        long[] dp = new long[Integer.parseInt(br.readLine())+1];
         dp[0] = 1;
         for(int i = 1; i < dp.length; i++){
-            for(int j = 0; j < i; j++){
-                dp[i] += dp[j] * dp[i-j-1];
+            for(int j = 0; j < i/2; j++){
+                dp[i] += 2 * dp[j] * dp[i-j-1];
+            }
+            if(i%2 == 1){
+                dp[i] += dp[i/2] * dp[i/2];
             }
         }
-        System.out.println(dp[n]);
+        System.out.println(dp[dp.length-1]);
     }
 }

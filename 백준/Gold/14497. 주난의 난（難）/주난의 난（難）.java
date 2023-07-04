@@ -53,12 +53,15 @@ public class Main {
             for(int d = 0; d < 4; d++){
                 nr = r + deltas[d];
                 nc = c + deltas[d+1];
+                // 다음 위치가 범위를 초과했거나, 이미 탐색한 곳이면 넘어가기
                 if(isArrOut(nr, nc) || visited[nr][nc] > 0)
                     continue;
+                // 만약 다음 위치가 친구가 없는곳이면, 덱의 앞에 넣어서 재탐색해준다.
                 if(map[nr][nc] == '0'){
                     visited[nr][nc] = visited[r][c];
                     dq.addFirst(new int[]{nr, nc});
                 }
+                // 다음 위치가 친구가 있는곳이니, 덱의 맨 뒤에 넣어 추후 탐색해준다.
                 else{
                     visited[nr][nc] = visited[r][c] + 1;
                     dq.addLast(new int[]{nr, nc});

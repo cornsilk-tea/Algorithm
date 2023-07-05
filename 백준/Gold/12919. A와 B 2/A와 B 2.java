@@ -5,30 +5,20 @@ import java.io.InputStreamReader;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder S = new StringBuilder(br.readLine());
-        StringBuilder T = new StringBuilder(br.readLine());
-        System.out.println(solution(S, T) ? 1 : 0);
+        System.out.println(solution(br.readLine(), br.readLine()) ? 1 : 0);
     }
 
-    private static boolean solution(StringBuilder s, StringBuilder t) {
-        if(t.toString().equals(s.toString())){
-            return true;
+    private static boolean solution(String s, String t) {
+        if(t.length() == s.length()){
+            return t.equals(s);
         }
         // 문자열 뒤에 A가 있다면 A를 빼준다.
-        if(t.length() > 0 && t.charAt(t.length()-1) == 'A'){
-            t = t.deleteCharAt(t.length()-1);
-            if(solution(s, t)){
-                return true;
-            }
-            t = t.append("A");
+        if(t.endsWith("A") && solution(s, t.substring(0, t.length()-1))){
+            return true;
         }
         // 문자열 앞에 B가 있다면, 문자열을 뒤집고 맨 뒤의 B를 빼준다.
-        if(t.length() > 0 && t.charAt(0) == 'B'){
-            t = t.reverse().deleteCharAt(t.length()-1);
-            if(solution(s, t)){
-                return true;
-            }
-            t = t.append("B").reverse();
+        if(t.startsWith("B") && solution(s, new StringBuilder(t.substring(1)).reverse().toString())){
+            return true;
         }
 
         return false;

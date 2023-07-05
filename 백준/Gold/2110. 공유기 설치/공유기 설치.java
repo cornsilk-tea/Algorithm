@@ -51,6 +51,6 @@ public class Main {
                 maxDistance = selectedDistance - 1;
             }
         }
-        System.out.println(result);
+        System.out.println(minDistance-1);
     }
 }

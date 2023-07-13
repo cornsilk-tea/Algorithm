@@ -26,7 +26,7 @@ public class Main {
             StringBuilder prefix = new StringBuilder();
             for (char ch : words[i].toCharArray()) {
                 prefix.append(ch);
-                if(prefixMap.containsKey(prefix.toString()) == false){
+                if(!prefixMap.containsKey(prefix.toString())){
                     prefixMap.put(prefix.toString(), new ArrayList<>());
                 }
                 prefixMap.get(prefix.toString()).add(i);
@@ -38,7 +38,8 @@ public class Main {
         // 최고길이를 가지는 접두사
         String maxPrefix = "";
         // prefixMap의 모든 접두사들을 순차탐색
-        for(String prefix : prefixMap.keySet()){
+        for(Map.Entry<String, ArrayList<Integer>> entry : prefixMap.entrySet()){
+            String prefix = entry.getKey();
             // 해당 접두사를 가지는 word들의 인덱스를 가지고 있는 리스트 가져오기
             ArrayList<Integer> list = prefixMap.get(prefix);
             // 해당 접두사를 가지는 word가 2개 이상이고, maxLength보다 긴 접두사라면 갱신.
@@ -47,18 +48,10 @@ public class Main {
                 maxPrefix = prefix;
             }
         }
-
-        if(maxLength == -1){
-            System.out.println(words[0]);
-            System.out.println(words[1]);
-        }
-        else{
-            // 위에서 찾은 가장 긴 접두사를 가지는 word 인덱스 리스트 가져오기
-            ArrayList<Integer> list = prefixMap.get(maxPrefix);
-            // 앞에서부터 2개 출력.
-            System.out.println(words[list.get(0)]);
-            System.out.println(words[list.get(1)]);
-        }
-
+        // 위에서 찾은 가장 긴 접두사를 가지는 word 인덱스 리스트 가져오기
+        ArrayList<Integer> list = prefixMap.get(maxPrefix);
+        // 앞에서부터 2개 출력.
+        System.out.println(words[list.get(0)]);
+        System.out.println(words[list.get(1)]);
     }
 }

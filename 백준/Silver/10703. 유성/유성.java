@@ -10,7 +10,6 @@ public class Main {
         int R = Integer.parseInt(st.nextToken());
         int C = Integer.parseInt(st.nextToken());
         char[][] map = new char[R][C];
-        Queue<int[]> meteoQ = new LinkedList<>();
         int[] meteoHeight = new int[C];
         Arrays.fill(meteoHeight, -1);
         int[] groundHeight = new int[C];
@@ -37,15 +36,12 @@ public class Main {
                 }
             }
         }
-//        System.out.println(Arrays.toString(meteoHeight));
-//        System.out.println(Arrays.toString(groundHeight));
         int minGap = Integer.MAX_VALUE;
         for(int i = 0; i < C; i++){
             if(meteoHeight[i] == -1)
                 continue;
             minGap = Math.min(groundHeight[i] - meteoHeight[i]-1, minGap);
         }
-//        System.out.println(minGap);
         for(int r = R-1; r >= 0; r--){
             for(int c = 0; c < C; c++){
                 if(map[r][c] == 'X'){
@@ -54,8 +50,13 @@ public class Main {
                 }
             }
         }
+        StringBuilder sb = new StringBuilder();
         for(char[] a : map){
-            System.out.println(Arrays.toString(a).replaceAll("[\\[\\], ]",""));
+            for(char b : a){
+                sb.append(b);
+            }
+            sb.append('\n');
         }
+        System.out.println(sb.toString());
     }
 }

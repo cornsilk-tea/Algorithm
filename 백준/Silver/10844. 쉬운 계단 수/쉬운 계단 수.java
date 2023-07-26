@@ -1,11 +1,14 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
     static final int MOD = 1000000000;
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        int N=Integer.parseInt(br.readLine());
         // 길이가 i이고, 마지막 자릿수가 j인 계단 수의 개수를 저장
         int[][] arr = new int[N+1][10];
         int answer = 0;

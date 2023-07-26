@@ -1,17 +1,15 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Scanner;
 
 public class Main {
     static final int MOD = 1000000000;
     public static void main(String[] args) throws IOException {
         BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
-        int N=Integer.parseInt(br.readLine());
+        int N = Integer.parseInt(br.readLine());
         // 길이가 i이고, 마지막 자릿수가 j인 계단 수의 개수를 저장
-        int[][] arr = new int[N+1][10];
-        int answer = 0;
+        long[][] arr = new long[N+1][10];
+        long answer = 0;
         // 1의자리수 초기화
         // 0으로 시작하는 수는 계단수가 아니므로 제외
         for(int i = 1; i < 10; i++){
@@ -41,9 +39,9 @@ public class Main {
             }
         }
         for(int i = 0; i <= 9; i++){
-            answer = (answer + arr[N][i]) % MOD;
+            answer += arr[N][i];
         }
-        System.out.println(answer);
+        System.out.println(answer % MOD);
     }
 
 }

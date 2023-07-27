@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -8,6 +6,7 @@ public class Main {
     static int[] cityRoots, travelPlan;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         int N = Integer.parseInt(br.readLine());
         int M = Integer.parseInt(br.readLine());
         cityConections = new int[N+1][N+1];
@@ -35,11 +34,13 @@ public class Main {
         int firstCityRoot = find(travelPlan[1]);
         for(int i = 2; i < travelPlan.length; i++){
             if(firstCityRoot != find(travelPlan[i])){
-                System.out.println("NO");
+                bw.write("NO");
+                bw.flush();
                 return;
             }
         }
-        System.out.println("YES");
+        bw.write("YES");
+        bw.flush();
     }
 
     private static void union(int city1, int city2) {

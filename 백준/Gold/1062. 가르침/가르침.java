@@ -7,6 +7,7 @@ public class Main {
     static int N,K, result;
     // 기본적으로 알아야 하는 글자들
     static final String baseAlphabetes = "antic";
+    static final int baseWordBit = 535741;
     // 입력 받은 단어들(비트마스킹을 위해 int 사용)
     static int[] words;
     static int[] alphabetCount;
@@ -37,14 +38,19 @@ public class Main {
             // 입력된 데이터로 비트마스킹 한 값을 저장.
             for (char c : inputWord.toCharArray()) {
                 if(!isBaseAlphabet(c)){
-                    words[i] |= (1 << (c - 'a'));
+                    words[i] |= makeChatToBit(c);
                     if (!usedAlphabets.contains(c)) {
                         usedAlphabets.add(c);
                     }
                 }
             }
         }
+        if (usedAlphabets.size() < K-5) {
+            System.out.println(N);
+            return;
+        }
         result = 0;
+//        System.out.println(Arrays.toString(words));
         dfs(0, 0, 0);
         System.out.println(result);
     }
@@ -60,16 +66,16 @@ public class Main {
             result = Math.max(result, readableWords);
             return;
         }
-        if(index == 27)
+        if(index == usedAlphabets.size())
             return;
         // 본문
         dfs(index + 1, cnt, selected);
-        dfs(index + 1, cnt + 1, selected | (1 << index - 'a'));
+        dfs(index + 1, cnt + 1, selected | (1 << usedAlphabets.get(index) - 'a'));
     }
     private static boolean isBaseAlphabet(char c){
-        for(char base : baseAlphabetes.toCharArray()){
-            if(base == c) return true;
-        }
-        return false;
+        return baseAlphabetes.indexOf(c) >= 0;
+    }
+    private static int makeChatToBit(char c){
+        return 1 << (c - 'a');
     }
 }

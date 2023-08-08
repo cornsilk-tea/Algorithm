@@ -45,12 +45,12 @@ public class Main {
                 }
             }
         }
+        // 만약 선택된 알파벳들의 개수가 K-5개보다 적으면 모든 문자들을 읽을 수 있다.
         if (usedAlphabets.size() < K-5) {
             System.out.println(N);
             return;
         }
         result = 0;
-//        System.out.println(Arrays.toString(words));
         dfs(0, 0, 0);
         System.out.println(result);
     }
@@ -70,7 +70,7 @@ public class Main {
             return;
         // 본문
         dfs(index + 1, cnt, selected);
-        dfs(index + 1, cnt + 1, selected | (1 << usedAlphabets.get(index) - 'a'));
+        dfs(index + 1, cnt + 1, selected | makeChatToBit(usedAlphabets.get(index)));
     }
     private static boolean isBaseAlphabet(char c){
         return baseAlphabetes.indexOf(c) >= 0;

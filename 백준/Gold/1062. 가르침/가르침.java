@@ -7,10 +7,9 @@ public class Main {
     static int N,K, result;
     // 기본적으로 알아야 하는 글자들
     static final String baseAlphabetes = "antic";
-    static final int baseWordBit = 535741;
+    static final int baseWordBit = 532741;
     // 입력 받은 단어들(비트마스킹을 위해 int 사용)
     static int[] words;
-    static int[] alphabetCount;
     static List<Character> usedAlphabets;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -51,12 +50,12 @@ public class Main {
             return;
         }
         result = 0;
-        dfs(0, 0, 0);
+        dfs(0, 5, 0);
         System.out.println(result);
     }
     private static void dfs(int index, int cnt, int selected){
         // 종료조건
-        if(cnt == K-5){
+        if(cnt == K){
             int readableWords = 0;
             for(int word : words){
                 if((selected & word) == word){
@@ -69,12 +68,19 @@ public class Main {
         if(index == usedAlphabets.size())
             return;
         // 본문
+        // 현재 알파벳을 선택하지 않을경우
         dfs(index + 1, cnt, selected);
+        // 현재 알파벳을 선택할 경우
         dfs(index + 1, cnt + 1, selected | makeChatToBit(usedAlphabets.get(index)));
     }
+
+    // 현재 char값이 기본문자열인 "antic"에 포함되는지 확인.
     private static boolean isBaseAlphabet(char c){
-        return baseAlphabetes.indexOf(c) >= 0;
+        int cBit = makeChatToBit(c);
+        return (baseWordBit & cBit) == cBit;
+//        return baseAlphabetes.indexOf(c) >= 0;
     }
+    // char를 비트마스킹 된 bit값으로 변환해준다.
     private static int makeChatToBit(char c){
         return 1 << (c - 'a');
     }

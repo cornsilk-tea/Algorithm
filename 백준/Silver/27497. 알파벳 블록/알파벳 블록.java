@@ -16,7 +16,7 @@ public class Main {
         Stack<Integer> stack = new Stack<>();
         for(int n = 0; n < N; n++){
             st = new StringTokenizer(br.readLine());
-            if(st.countTokens() < 2){
+            if(st.countTokens() == 1){
                 // 무조건 3임
                 if(!stack.empty()) {
                     if(stack.pop() == 1) {
@@ -41,11 +41,15 @@ public class Main {
                 }
             }
         }
-        System.out.println(deque.size() == 0 ? "0" : printDeque(deque));
+        System.out.println(printDeque(deque));
     }
 
     private static String printDeque(Deque<Character> deque) {
         StringBuilder sb = new StringBuilder();
+        if(deque.size() == 0){
+            sb.append(0);
+            return sb.toString();
+        }
         while(!deque.isEmpty()){
             sb.append(deque.pollFirst());
         }

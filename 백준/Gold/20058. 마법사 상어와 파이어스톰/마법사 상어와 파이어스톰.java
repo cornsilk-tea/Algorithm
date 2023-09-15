@@ -1,18 +1,17 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int[][] map, v;
+    static int[][] map, visited;
     static int N, Q, L, powL, totalIce;
 
     static int[] dr = {-1, 0, 1, 0};
     static int[] dc = {0, -1, 0, 1};
-    static Queue<int[]> q = new LinkedList<>();
+    static Queue<int[]> meltingQ = new LinkedList<>();
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -38,24 +37,25 @@ public class Main {
         // 전체 덩어리의 합 출력
         System.out.println(totalIce);
         // 가장 큰 덩어리가 차지하는 칸의 개수 출력(bfs)
-        v = new int[(int) Math.pow(2,N)][(int) Math.pow(2,N)];
+        visited = new int[(int) Math.pow(2,N)][(int) Math.pow(2,N)];
         int idx = 1;
         int maxSize = 0;
         for(int r = 0; r < map.length; r++){
             for(int c = 0; c < map.length; c++){
-                maxSize = Math.max(bfs(r,c,idx++), maxSize);
+                if(map[r][c] != 0 && visited[r][c] == 0){
+                    maxSize = Math.max(bfs(r,c,idx++), maxSize);
+                }
             }
         }
         System.out.println(maxSize);
     }
 
     private static int bfs(int R, int C, int idx) {
-        if (map[R][C] == 0 || v[R][C] != 0) return 0;  // 추가: 얼음이 없거나 이미 방문한 칸은 건너뜁니다.
 
         int size = 1;
         Queue<int[]> q = new LinkedList<>();
         q.add(new int[]{R,C});
-        v[R][C] = idx;
+        visited[R][C] = idx;
         while(!q.isEmpty()){
             int[] curr = q.poll();
             for(int d = 0; d < 4; d++){
@@ -64,10 +64,10 @@ public class Main {
                 if(nr < 0 || nc < 0 || nr >= map.length || nc >= map.length){
                     continue;
                 }
-                if(v[nr][nc] != 0 || map[nr][nc] == 0){
+                if(visited[nr][nc] != 0 || map[nr][nc] == 0){
                     continue;
                 }
-                v[nr][nc] = idx;
+                visited[nr][nc] = idx;
                 size++;
                 q.add(new int[]{nr,nc});
             }
@@ -98,14 +98,14 @@ public class Main {
                     iceCnt += map[nr][nc] > 0 ? 1 : 0;
                 }
                 if (map[r][c] > 0 && iceCnt < 3) {  // 얼음이 있고, 줄어들어야 하는 조건을 추가
-                    q.add(new int[]{r, c});
+                    meltingQ.add(new int[]{r, c});
                 }
 
             }
         }
         // 전체탐색을 마쳤으니 얼음 한번에 지워주기
-        while (!q.isEmpty()) {
-            int[] curr = q.poll();
+        while (!meltingQ.isEmpty()) {
+            int[] curr = meltingQ.poll();
             if (map[curr[0]][curr[1]] > 0) {  // 얼음이 이미 녹아서 0이 아닌 경우만 녹인다.
                 map[curr[0]][curr[1]]--;
                 totalIce--;
